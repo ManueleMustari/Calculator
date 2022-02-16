@@ -45,8 +45,9 @@ public class Calculator extends Application {
 
     //Other
     private Font font = Font.font("Arial", FontWeight.BOLD, 15);
-    private String secondColor = "-fx-background-color: orange;" + "-fx-text-fill: black";
-    private String firstColor="-fx-background-color: Orange;" + "-fx-text-fill: black";
+    private String textBlack = "-fx-text-fill: black";
+    private String secondColor = "-fx-background-color: orange;" + textBlack;
+    private String firstColor="-fx-background-color: Orange;" + textBlack;
 
     public void sum(){
         if (first.equals("")) { second = ""; op = "";}
@@ -86,8 +87,9 @@ public class Calculator extends Application {
                 second = "";
                 break;
             }
-            case "C" : empty();
+            case "C" :
             {
+                empty();
                 log = false;
                 radix = false;
                 break;
@@ -138,26 +140,26 @@ public class Calculator extends Application {
                 break;
             case "+":
             {
-                first = primo.add(this.base10Log(secondo)) + "";
-                displayResult(primo.add(this.base10Log(secondo)));
+                first = primo.add(base10Log(secondo)) + "";
+                displayResult(primo.add(base10Log(secondo)));
                 log = false;
                 break;
             }
             case "-": {
-                first = primo.subtract(this.base10Log(secondo)) + "";
-                displayResult(primo.subtract(this.base10Log(secondo)));
+                first = primo.subtract(base10Log(secondo)) + "";
+                displayResult(primo.subtract(base10Log(secondo)));
                 log = false;
                 break;
             }
             case "x": {
-                first = primo.multiply(this.base10Log(secondo)) + "";
-                displayResult(primo.multiply(this.base10Log(secondo)));
+                first = primo.multiply(base10Log(secondo)) + "";
+                displayResult(primo.multiply(base10Log(secondo)));
                 log = false;
                 break;
             }
             case "÷": {
-                first = primo.divide(this.base10Log(secondo)) + "";
-                displayResult(primo.divide(this.base10Log(secondo)));
+                first = primo.divide(base10Log(secondo)) + "";
+                displayResult(primo.divide(base10Log(secondo)));
                 log = false;
                 break;
             }
@@ -218,8 +220,8 @@ public class Calculator extends Application {
             else {
                 switch (op) {
                     case "log": {
-                        first = primo.multiply(this.base10Log(secondo)) + "";
-                        displayResult(primo.multiply(this.base10Log(secondo)));
+                        first = primo.multiply(base10Log(secondo)) + "";
+                        displayResult(primo.multiply(base10Log(secondo)));
                         break;
                     }
                     case "√": {
@@ -229,8 +231,8 @@ public class Calculator extends Application {
                         break;
                     }
                     case "pow": {
-                        first = this.pow(primo, secondo) + "";
-                        displayResult(this.pow(primo, secondo));
+                        first = pow(primo, secondo) + "";
+                        displayResult(pow(primo, secondo));
                         break;
                     }
                     case "+": {
@@ -364,7 +366,7 @@ public class Calculator extends Application {
         Button btn0= setNewButton("0");
         Button btnPt= setNewButton(".");
         Button btnUgual= setNewButton("=");
-        btnUgual.setStyle("-fx-background-color: #e8e7fc;" + "-fx-text-fill: black");
+        btnUgual.setStyle("-fx-background-color: #e8e7fc;" + textBlack);
 
         row5.getChildren().addAll(btnAdv,btn0,btnPt,btnUgual);
 
@@ -479,7 +481,7 @@ public class Calculator extends Application {
     private Button setNewButton(String text){
         Button btn=new Button(text);
         btn.setMinSize(50,50);
-        btn.setStyle("-fx-font-weight: bold;" + "-fx-background-color: white;" + "-fx-text-fill: black");
+        btn.setStyle("-fx-font-weight: bold;" + "-fx-background-color: white;" + textBlack);
         btn.setFont(font);
         btn.setOnAction(e -> opHandler(text));
         return btn;
@@ -491,8 +493,8 @@ public class Calculator extends Application {
         switch (op) {
             case "log":
             {
-                first = primo.multiply(this.base10Log(secondo)) + "";
-                displayResult(primo.multiply(this.base10Log(secondo)));
+                first = primo.multiply(base10Log(secondo)) + "";
+                displayResult(primo.multiply(base10Log(secondo)));
                 op = who;
                 break;
             }
