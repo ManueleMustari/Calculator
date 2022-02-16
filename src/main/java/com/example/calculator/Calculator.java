@@ -29,7 +29,7 @@ public class Calculator extends Application {
     private HBox row5;
     private VBox background;
     private HBox containerDisplay;
-    private BorderPane root;
+    private BorderPane borderPane;
     private Stage stage;
 
     //Input
@@ -46,8 +46,8 @@ public class Calculator extends Application {
     //Other
     private Font font = Font.font("Arial", FontWeight.BOLD, 15);
     private String textBlack = "-fx-text-fill: black";
-    private String secondColor = "-fx-background-color: orange;" + textBlack;
     private String firstColor="-fx-background-color: Orange;" + textBlack;
+    private String radius = "-fx-background-radius: 28;";
 
     public void sum(){
         if (first.equals("")) { second = ""; op = "";}
@@ -269,8 +269,8 @@ public class Calculator extends Application {
 
     private void setScene(){
 
-        root=new BorderPane();
-        root.setMinSize(300,400);
+        borderPane =new BorderPane();
+        borderPane.setMinSize(300,400);
 
         background =new VBox();
         background.setStyle("-fx-background-color: black");
@@ -306,70 +306,69 @@ public class Calculator extends Application {
         Button btnPi=setNewButton("π");
         Button btnPow=setNewButton("pow");
 
-        btnLog.setStyle(firstColor);
-        btnSquare.setStyle(firstColor);
-        btnPi.setStyle(firstColor);
-        btnPow.setStyle(firstColor);
+        btnLog.setStyle(firstColor + radius);
+        btnSquare.setStyle(firstColor + radius);
+        btnPi.setStyle(firstColor + radius);
+        btnPow.setStyle(firstColor + radius);
 
-        row0.getChildren().addAll(btnLog,btnSquare,btnPi,btnPow);
+        row0.getChildren().addAll(btnPow,btnLog,btnPi,btnSquare);
 
         Button btnCE= setNewButton("±");
         Button btnC= setNewButton("C");
         Button btnDel= setNewButton("⌫");
-        Button btnDiv= setNewButton("÷");
-        btnDiv.setStyle(secondColor);
-        btnDel.setStyle(secondColor);
-        btnC.setStyle(secondColor);
-        btnCE.setStyle(secondColor);
-
-        row1.getChildren().addAll(btnCE,btnC,btnDel,btnDiv);
-
-        Button btn7= setNewButton("7");
-        Button btn8= setNewButton("8");
-        Button btn9= setNewButton("9");
-        Button btnMul= setNewButton("x");
-        btnMul.setStyle(secondColor);
-
-        row2.getChildren().addAll(btn7,btn8,btn9,btnMul);
-
-        Button btn4= setNewButton("4");
-        Button btn5= setNewButton("5");
-        Button btn6= setNewButton("6");
-        Button btnMinus= setNewButton("-");
-        btnMinus.setStyle(secondColor);
-
-        row3.getChildren().addAll(btn4,btn5,btn6,btnMinus);
+        Button btnSum= setNewButton("+");
+        btnSum.setStyle(firstColor);
+        btnDel.setStyle(firstColor);
+        btnC.setStyle(firstColor);
+        btnCE.setStyle(firstColor + radius);
 
         Button btn1= setNewButton("1");
         Button btn2= setNewButton("2");
         Button btn3= setNewButton("3");
-        Button btnSum= setNewButton("+");
-        btnSum.setStyle(secondColor);
+        Button btnMinus= setNewButton("-");
+        btnMinus.setStyle(firstColor + radius);
 
-        row4.getChildren().addAll(btn1,btn2,btn3,btnSum);
+        Button btn4= setNewButton("4");
+        Button btn5= setNewButton("5");
+        Button btn6= setNewButton("6");
+        Button btnMul= setNewButton("x");
+        btnMul.setStyle(firstColor + radius);
+
+
+        Button btn7= setNewButton("7");
+        Button btn8= setNewButton("8");
+        Button btn9= setNewButton("9");
+        Button btnDiv= setNewButton("÷");
+        btnDiv.setStyle(firstColor);
+
+
+        row1.getChildren().addAll(btnC,btnCE,btnDel,btnSum);
+        row2.getChildren().addAll(btn7,btn8,btn9,btnMinus);
+        row3.getChildren().addAll(btn4,btn5,btn6,btnMul);
+        row4.getChildren().addAll(btn1,btn2,btn3,btnDiv);
 
         Button btnAdv= new Button("pro");
         btnAdv.setMinSize(50,50);
-        btnAdv.setStyle(secondColor);
+        btnAdv.setStyle(firstColor);
         btnAdv.setFont(font);
         btnAdv.setOnAction(e -> {
             proMode();
             if(advancedMode){
                 btnAdv.setText("back");
-                btnAdv.setStyle("-fx-background-color: #200f54;" + "-fx-text-fill: white");
+                btnAdv.setStyle("-fx-background-color: #e8e7fc;" + textBlack);
             }
             else{
                 btnAdv.setText("adv");
-                btnAdv.setStyle(secondColor);
+                btnAdv.setStyle("-fx-background-color: #e8e7fc;" + textBlack);
             }
         });
 
         Button btn0= setNewButton("0");
         Button btnPt= setNewButton(".");
         Button btnUgual= setNewButton("=");
-        btnUgual.setStyle("-fx-background-color: #e8e7fc;" + textBlack);
+        btnUgual.setStyle(firstColor);
 
-        row5.getChildren().addAll(btnAdv,btn0,btnPt,btnUgual);
+        row5.getChildren().addAll(btnPt,btn0,btnAdv,btnUgual);
 
         display =new TextArea();
         display.setMaxHeight(50);
@@ -385,7 +384,7 @@ public class Calculator extends Application {
 
     public void dot(){
         if (first.length() >= 1 && op.equals("")) {
-            if (!first.contains(".")) { first = first + "."; }
+            if (!first.contains(".")) {first = first + ".";}
         }
         else if (second.length() >= 1 && !second.contains(".")) { second = second + "."; }
         display();
@@ -563,9 +562,9 @@ public class Calculator extends Application {
     public void start(Stage stage) {
         this.stage =stage;
         setScene();
-        root.setCenter(background);
-        root.setTop(containerDisplay);
-        Scene scene = new Scene(root);
+        borderPane.setCenter(background);
+        borderPane.setTop(containerDisplay);
+        Scene scene = new Scene(borderPane);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
