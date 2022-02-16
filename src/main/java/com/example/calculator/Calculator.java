@@ -81,7 +81,7 @@ public class Calculator extends Application {
     private void opHandler(String pressed) {
         switch (pressed) {
             case "=" : {
-                equal();
+                calcResult();
                 back = true;
                 op = "";
                 second = "";
@@ -210,7 +210,8 @@ public class Calculator extends Application {
         }
     }
 
-    public void equal(){ //when equal is pressed
+    //equal pressed
+    public void calcResult(){
         if (second.equals("")) { displayResult(new BigDecimal(first));}
         else{
             BigDecimal primo = new BigDecimal(first);
