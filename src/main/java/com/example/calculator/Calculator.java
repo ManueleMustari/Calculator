@@ -23,16 +23,9 @@ public class Calculator extends Application {
 
     //Stage
     private TextArea textShowed;
-    private HBox row0;
-    private HBox row1;
-    private HBox row2;
-    private HBox row3;
-    private HBox row4;
-    private HBox row5;
     private VBox background;
     private HBox containerDisplay;
     private BorderPane borderPane;
-    private Stage stage;
 
     //Input
     private String first ="";
@@ -326,22 +319,22 @@ public class Calculator extends Application {
         btnDiv.setStyle(firstColor);
         btnUgual.setStyle(firstColor);
 
-        row0 =new HBox();
+        HBox row0 =new HBox();
         row0.setSpacing(10);
         row0.setAlignment(Pos.CENTER);
-        row1 =new HBox();
+        HBox row1 =new HBox();
         row1.setSpacing(10);
         row1.setAlignment(Pos.CENTER);
-        row2 =new HBox();
+        HBox row2 =new HBox();
         row2.setSpacing(10);
         row2.setAlignment(Pos.CENTER);
-        row3 =new HBox();
+        HBox row3 =new HBox();
         row3.setSpacing(10);
         row3.setAlignment(Pos.CENTER);
-        row4 =new HBox();
+        HBox row4 =new HBox();
         row4.setSpacing(10);
         row4.setAlignment(Pos.CENTER);
-        row5 =new HBox();
+        HBox row5 =new HBox();
         row5.setSpacing(10);
         row5.setAlignment(Pos.CENTER);
 
@@ -527,14 +520,14 @@ public class Calculator extends Application {
 
     @Override
     public void start(Stage stage) {
-        this.stage =stage;
+        Stage myStage = stage;
         setAll();
         borderPane.setCenter(background);
         borderPane.setTop(containerDisplay);
         Scene scene = new Scene(borderPane);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        myStage.setScene(scene);
+        myStage.setResizable(false);
+        myStage.show();
         empty();
     }
 
