@@ -16,11 +16,13 @@ import javafx.stage.Stage;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import static javafx.application.Platform.exit;
+
 
 public class Calculator extends Application {
 
     //Stage
-    private TextArea display;
+    private TextArea textShowed;
     private HBox row0;
     private HBox row1;
     private HBox row2;
@@ -38,7 +40,6 @@ public class Calculator extends Application {
     private String op ="";
 
     //Boolean
-    private boolean advancedMode =false;
     private boolean back =false;
     private boolean log =false;
     private boolean radix =false;
@@ -47,8 +48,8 @@ public class Calculator extends Application {
     private Font font = Font.font("Arial", FontWeight.BOLD, 15);
     private String textBlack = "-fx-text-fill: black";
     private String firstColor="-fx-background-color: Orange;" + textBlack;
-    private String radius = "-fx-background-radius: 28;";
 
+    //Operations
     public void sum(){
         if (first.equals("")) { second = ""; op = "";}
         else {op = "+";}
@@ -72,7 +73,7 @@ public class Calculator extends Application {
         if (!first.equals("") && !second.equals("") && !operation.equals("") ) { noEqualPressed(operation);}
         else if(operation.equals("√") || operation.equals("log")) { radixAndPow(operation); return;}
         else if(operation.equals("+")) { sum(); }
-        else if(operation.equals("pow") || operation.equals("-")){ powAndSub(operation);}
+        else if(operation.equals("^") || operation.equals("-")){ powAndSub(operation);}
         else if (operation.equals("x")){ mult(); }
         else if(operation.equals("÷")){ div(); }
         display();
@@ -80,7 +81,8 @@ public class Calculator extends Application {
 
     private void opHandler(String pressed) {
         switch (pressed) {
-            case "=" : {
+            case "=" :
+            {
                 calcResult();
                 back = true;
                 op = "";
@@ -94,7 +96,8 @@ public class Calculator extends Application {
                 radix = false;
                 break;
             }
-            case "." :{
+            case "." :
+            {
                 dot();
                 break;
             }
@@ -104,11 +107,12 @@ public class Calculator extends Application {
                 delete();
                 break;
             }
-            case "±" : {
+            case "±" :
+            {
                 changeSign();
                 break;
             }
-            case "+","-","x", "÷","pow", "log", "√": {
+            case "+","-","x", "÷","^", "log", "√": {
                 operationsManager(pressed);
                 break;
             }
@@ -136,7 +140,7 @@ public class Calculator extends Application {
 
     public void pressedLog(BigDecimal primo, BigDecimal secondo){
         switch (op) {
-            case "log", "√", "pow":
+            case "log", "√", "^":
                 break;
             case "+":
             {
@@ -175,7 +179,7 @@ public class Calculator extends Application {
                 break;
             case "√":
                 break;
-            case "pow":
+            case "^":
                 break;
             case "+": {
                 res = primo.add(secondo.sqrt(new MathContext(10)));
@@ -210,8 +214,8 @@ public class Calculator extends Application {
         }
     }
 
-    //equal pressed
-    public void calcResult(){
+
+    public void calcResult(){ //equal pressed
         if (second.equals("")) { displayResult(new BigDecimal(first));}
         else{
             BigDecimal primo = new BigDecimal(first);
@@ -231,7 +235,7 @@ public class Calculator extends Application {
                         displayResult(multiply);
                         break;
                     }
-                    case "pow": {
+                    case "^": {
                         first = pow(primo, secondo) + "";
                         displayResult(pow(primo, secondo));
                         break;
@@ -267,119 +271,97 @@ public class Calculator extends Application {
         }
     }
 
-    private void setScene(){
+    //Graphics
+    private void setAll(){
 
         borderPane =new BorderPane();
-        borderPane.setMinSize(300,400);
-
         background =new VBox();
+        borderPane.setMinSize(250,450);
         background.setStyle("-fx-background-color: black");
         background.setAlignment(Pos.CENTER);
         background.setSpacing(10);
 
-        row0 =new HBox();
-        row0.setSpacing(10);
-        row0.setAlignment(Pos.CENTER);
-
-        row1 =new HBox();
-        row1.setSpacing(10);
-        row1.setAlignment(Pos.CENTER);
-
-        row2 =new HBox();
-        row2.setSpacing(10);
-        row2.setAlignment(Pos.CENTER);
-
-        row3 =new HBox();
-        row3.setSpacing(10);
-        row3.setAlignment(Pos.CENTER);
-
-        row4 =new HBox();
-        row4.setSpacing(10);
-        row4.setAlignment(Pos.CENTER);
-
-        row5 =new HBox();
-        row5.setSpacing(10);
-        row5.setAlignment(Pos.CENTER);
-
         Button btnLog=setNewButton("log");
         Button btnSquare=setNewButton("√");
         Button btnPi=setNewButton("π");
-        Button btnPow=setNewButton("pow");
-
-        btnLog.setStyle(firstColor + radius);
-        btnSquare.setStyle(firstColor + radius);
-        btnPi.setStyle(firstColor + radius);
-        btnPow.setStyle(firstColor + radius);
-
-        row0.getChildren().addAll(btnPow,btnLog,btnPi,btnSquare);
-
-        Button btnCE= setNewButton("±");
+        Button btnPow=setNewButton("^");
+        Button btnChangeSign= setNewButton("±");
         Button btnC= setNewButton("C");
         Button btnDel= setNewButton("⌫");
         Button btnSum= setNewButton("+");
-        btnSum.setStyle(firstColor);
-        btnDel.setStyle(firstColor);
-        btnC.setStyle(firstColor);
-        btnCE.setStyle(firstColor + radius);
-
         Button btn1= setNewButton("1");
         Button btn2= setNewButton("2");
         Button btn3= setNewButton("3");
         Button btnMinus= setNewButton("-");
-        btnMinus.setStyle(firstColor + radius);
-
         Button btn4= setNewButton("4");
         Button btn5= setNewButton("5");
         Button btn6= setNewButton("6");
         Button btnMul= setNewButton("x");
-        btnMul.setStyle(firstColor + radius);
-
-
         Button btn7= setNewButton("7");
         Button btn8= setNewButton("8");
         Button btn9= setNewButton("9");
         Button btnDiv= setNewButton("÷");
-        btnDiv.setStyle(firstColor);
-
-
-        row1.getChildren().addAll(btnC,btnCE,btnDel,btnSum);
-        row2.getChildren().addAll(btn7,btn8,btn9,btnMinus);
-        row3.getChildren().addAll(btn4,btn5,btn6,btnMul);
-        row4.getChildren().addAll(btn1,btn2,btn3,btnDiv);
-
-        Button btnAdv= new Button("pro");
-        btnAdv.setMinSize(50,50);
-        btnAdv.setStyle(firstColor);
-        btnAdv.setFont(font);
-        btnAdv.setOnAction(e -> {
-            proMode();
-            if(advancedMode){
-                btnAdv.setText("back");
-                btnAdv.setStyle("-fx-background-color: #e8e7fc;" + textBlack);
-            }
-            else{
-                btnAdv.setText("adv");
-                btnAdv.setStyle("-fx-background-color: #e8e7fc;" + textBlack);
-            }
-        });
-
         Button btn0= setNewButton("0");
         Button btnPt= setNewButton(".");
         Button btnUgual= setNewButton("=");
+
+        Button btnExit= new Button("Exit");
+        btnExit.setMinSize(50,50);
+        btnExit.setStyle("-fx-background-color: #d00000;" + "-fx-text-fill: white");
+        btnExit.setFont(font);
+        btnExit.setOnAction(e ->
+                exit()
+        );
+
+        btnLog.setStyle(firstColor);
+        btnSquare.setStyle(firstColor);
+        btnPi.setStyle(firstColor);
+        btnPow.setStyle(firstColor);
+        btnSum.setStyle(firstColor);
+        btnDel.setStyle(firstColor);
+        btnC.setStyle(firstColor);
+        btnChangeSign.setStyle(firstColor);
+        btnMinus.setStyle(firstColor);
+        btnMul.setStyle(firstColor);
+        btnDiv.setStyle(firstColor);
         btnUgual.setStyle(firstColor);
 
-        row5.getChildren().addAll(btnPt,btn0,btnAdv,btnUgual);
+        row0 =new HBox();
+        row0.setSpacing(10);
+        row0.setAlignment(Pos.CENTER);
+        row1 =new HBox();
+        row1.setSpacing(10);
+        row1.setAlignment(Pos.CENTER);
+        row2 =new HBox();
+        row2.setSpacing(10);
+        row2.setAlignment(Pos.CENTER);
+        row3 =new HBox();
+        row3.setSpacing(10);
+        row3.setAlignment(Pos.CENTER);
+        row4 =new HBox();
+        row4.setSpacing(10);
+        row4.setAlignment(Pos.CENTER);
+        row5 =new HBox();
+        row5.setSpacing(10);
+        row5.setAlignment(Pos.CENTER);
 
-        display =new TextArea();
-        display.setMaxHeight(50);
-        display.setMaxWidth(230);
-        display.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        containerDisplay =new HBox(display);
+        row0.getChildren().addAll(btnExit,btnLog,btnPi,btnSquare);
+        row1.getChildren().addAll(btnC,btnDel,btnPow,btnSum);
+        row2.getChildren().addAll(btn7,btn8,btn9,btnMinus);
+        row3.getChildren().addAll(btn4,btn5,btn6,btnMul);
+        row4.getChildren().addAll(btn1,btn2,btn3,btnDiv);
+        row5.getChildren().addAll(btnChangeSign,btn0,btnPt,btnUgual);
+
+        textShowed =new TextArea();
+        textShowed.setMaxHeight(10);
+        textShowed.setMaxWidth(200);
+        textShowed.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        containerDisplay =new HBox(textShowed);
         containerDisplay.setAlignment(Pos.CENTER);
-        containerDisplay.setStyle("-fx-background-color: black" );
-        containerDisplay.setPadding(new Insets( 20, 0, 0, 0 ) );
+        containerDisplay.setStyle("-fx-background-color: black;");
+        containerDisplay.setPadding(new Insets( 20, 0, 0, 0 ));
 
-        background.getChildren().addAll(row1, row2, row3, row4, row5);
+        background.getChildren().addAll(row0, row1, row2, row3, row4, row5);
     }
 
     public void dot(){
@@ -419,11 +401,11 @@ public class Calculator extends Application {
     }
 
     private void displayLog() {
-        this.display.setText(first +" "+ op +" "+"log "+ second);
+        this.textShowed.setText(first +" "+ op +" "+"log "+ second);
     }
 
     private void displaySqrt() {
-        this.display.setText(first +" "+ op +" "+"√ "+ second);
+        this.textShowed.setText(first +" "+ op +" "+"√ "+ second);
     }
 
     private void reformat() {
@@ -441,41 +423,26 @@ public class Calculator extends Application {
         if(first.equals("") && second.equals("") && op.equals("")){
             empty();
         }else {
-            this.display.setText(first + " " + op + " " + second);
+            this.textShowed.setText(first + " " + op + " " + second);
         }
     }
 
     private void displayResult(BigDecimal result){
-        this.display.setText(result+"");
+        this.textShowed.setText(result+"");
     }
 
     private void empty(){
         first ="";
         op ="";
         second ="";
-        this.display.setText("0");
+        this.textShowed.setText("0");
     }
 
     private void displayInfinity(){
         first ="";
         op ="";
         second ="";
-        this.display.setText("Infinity");
-    }
-
-    private void proMode() {
-        if(!advancedMode){
-        background.getChildren().clear();
-        background.getChildren().addAll(row0, row1, row2, row3, row4, row5);
-        stage.setHeight(500);
-        advancedMode =true;
-        }
-        else{
-            background.getChildren().clear();
-            background.getChildren().addAll(row1, row2, row3, row4, row5);
-            stage.setHeight(450);
-            advancedMode =false;
-        }
+        this.textShowed.setText("Infinity");
     }
 
     private Button setNewButton(String text){
@@ -561,7 +528,7 @@ public class Calculator extends Application {
     @Override
     public void start(Stage stage) {
         this.stage =stage;
-        setScene();
+        setAll();
         borderPane.setCenter(background);
         borderPane.setTop(containerDisplay);
         Scene scene = new Scene(borderPane);
